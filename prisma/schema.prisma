@@ -1,0 +1,44 @@
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  title String
+  content String
+  createdAt DateTime @default(now()) @map("created_at")
+  //relation field to connect post and user model
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  //foreign key mapped to user_id in database table
+  authorId Int @map("user_id")
+  @@map("posts")
+}
+
+//define user model
+model User {
+  id Int @id @default(autoincrement())
+  //each user must have unique email
+  email String @unique
+  //store users password
+  password String
+  //define users role in system
+  role Role @default(USER)
+  //relationship between users and post
+  //each user is associated with list of post
+  posts Post[]
+  //map model to users table in database
+  @@map("users")
+}
+
+//define role enum 
+enum Role {
+  USER
+  ADMIN
+}
+
