@@ -34,7 +34,7 @@ export async function getPostByIdHandler(req, res) {
 
 export async function createPostHandler(req, res) {
   const { title, content } = req.body;
-  const newPost = await createPost({ title, content });
+  const newPost = await createPost({ title, content, authorId: req.user.id });
   res.status(201).json(newPost);
 }
 

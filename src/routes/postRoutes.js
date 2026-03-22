@@ -14,11 +14,28 @@ import {
   validatePostQuery,
 } from '../middleware/postValidators.js';
 
+import { authenticate } from '../middleware/authenticate.js';
+import { authorizeOwnership } from '../middleware/authorizeOwnership.js';
+
 const router = express.Router();
 router.get('/', validatePostQuery, getAllPostsHandler);
 router.get('/:id', validateId, getPostByIdHandler);
-router.post('/', validateCreatePost, createPostHandler);
-router.put('/:id', validateId, validateUpdatePost, updatePostHandler);
-router.delete('/:id', validateId, deletePostHandler);
+router.post('/', authenticate, validateCreatePost, createPostHandler);
+//make sure postId is valid before getting the post
+router.put(
+  '/:id',
+  authenticate,
+  validateId,
+  authorizeOwnership,
+  validateUpdatePost,
+  updatePostHandler,
+);
+router.delete(
+  '/:id',
+  authenticate,
+  validateId,
+  authorizeOwnership,
+  deletePostHandler,
+);
 
 export default router;

@@ -1,4 +1,4 @@
--- CreateTable
+npx -- CreateTable
 CREATE TABLE "posts" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,

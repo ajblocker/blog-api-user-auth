@@ -14,9 +14,9 @@ model Post {
   content String
   createdAt DateTime @default(now()) @map("created_at")
   //relation field to connect post and user model
-  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  author User? @relation(fields: [authorId], references: [id], onDelete: Cascade)
   //foreign key mapped to user_id in database table
-  authorId Int @map("user_id")
+  authorId Int? @map("user_id")
   @@map("posts")
 }
 
