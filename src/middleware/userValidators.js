@@ -1,24 +1,40 @@
 import { param, body, oneOf, query } from 'express-validator';
+import { handleValidationErrors } from './handleValidationErrors.js';
 
 export const validateSignUp = [
   body('email')
     .exists()
+    .trim()
     .withMessage('Email is required')
     .isEmail()
     .withMessage('Enter a valid email address')
-    .trim()
     .normalizeEmail(),
 
   body('password')
     .exists()
+    .trim()
     .withMessage('Password is required')
-    .isLength({ min: 3 })
-    .withMessage('Password must be at least 3 characters long')
-    .isLength({ max: 64 })
-    .withMessage('Password cannot be greater than 64 characters'),
+    .isLength({ min: 8, max: 64 })
+    .withMessage(
+      'Password must contain at least 8 characters and at most 64 characters',
+    ),
 
   body('role')
     .optional()
     .isIn(['ADMIN', 'USER'])
     .withMessage('Role must be either admin or user'),
+
+  handleValidationErrors,
+];
+
+export const validateLogIn = [
+  body('email').exists().trim().isEmail().withMessage('Email is required'),
+
+  body('password')
+    .exists()
+    .trim()
+    .isLength({ min: 8, max: 64 })
+    .withMessage('Password is required'),
+
+  handleValidationErrors,
 ];
