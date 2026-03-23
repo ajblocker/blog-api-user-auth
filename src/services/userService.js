@@ -10,7 +10,7 @@ export async function getAllUsers() {
   return findAllUsers();
 }
 
-export async function getUserById() {
+export async function getUserById(id) {
   const user = await findUserById(id);
   if (user) return user;
   else {
