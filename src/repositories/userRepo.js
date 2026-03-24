@@ -1,4 +1,5 @@
 import prisma from '../config/db.js';
+import bcrypt from 'bcrypt';
 
 export async function createUser(data) {
   try {
@@ -39,6 +40,10 @@ export async function findUserById(id) {
 
 export async function updateUser(id, updateData) {
   try {
+    if (updateData.password) {
+      const hashedPassword = await bcrypt.hash(updateData.password, 10);
+      updateData.password = hashedPassword;
+    }
     return await prisma.user.update({
       where: { id },
       data: updateData,

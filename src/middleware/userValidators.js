@@ -38,3 +38,13 @@ export const validateLogIn = [
 
   handleValidationErrors,
 ];
+
+export const validateUpdateRole = [
+  body('role')
+    .exists()
+    .withMessage('Role is required')
+    .isIn(['ADMIN', 'USER'])
+    .withMessage('Role must be an ADMIN or USER'),
+
+  handleValidationErrors,
+];

@@ -6,7 +6,7 @@ export const logInLimiter = rateLimit({
   //set timeframe for limit in ms
   windowMs: 60 * 1000,
   //define max number of request allowed in time window
-  limit: 3,
+  limit: process.env.NODE_ENV === 'test' ? 1000 : 3,
   //runs when limit is exceeded
   handler: function (req, res, next) {
     const error = new Error('Too many login requests. Try again later.');

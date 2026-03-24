@@ -1,4 +1,5 @@
 import {
+  deleteUser,
   findAllUsers,
   findPostByUserId,
   findUserById,
@@ -42,4 +43,14 @@ export async function deleteUserById(id) {
 
 export async function getPostByUserId(userId) {
   return findPostByUserId(userId);
+}
+
+export async function updateUserRole(id, role) {
+  const result = await findUserById(id);
+  if (result) return updateUser(id, { role });
+  else {
+    const error = new Error(`User ${id} is not found`);
+    error.status = 404;
+    throw error;
+  }
 }
