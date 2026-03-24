@@ -50,9 +50,13 @@ export async function updateUser(id, updateData) {
       omit: { password: true },
     });
   } catch (error) {
-    if (error.code === 'P2025') return null;
+    if (error.code === 'P2025') {
+      const err = new Error('User not found');
+      err.status = 404;
+      throw err;
+    }
     if (error.code === 'P2002') {
-      const err = new Error('Email is already in use.');
+      const err = new Error('Email has already been used');
       err.status = 409;
       throw err;
     }
@@ -66,7 +70,11 @@ export async function deleteUser(id) {
       where: { id },
     });
   } catch (error) {
-    if (error.code === 'P2025') return null;
+    if (error.code === 'P2025') {
+      const err = new Error('User not found');
+      err.status = 404;
+      throw err;
+    }
     throw error;
   }
 }
